@@ -194,7 +194,7 @@ We welcome contributions! Here’s how you can help:
 
 ## License
 
-TTL Cache DB is open-source software licensed under the [MIT License](LICENSE).
+TTL OCTOPUS CACHE DB is open-source software licensed under the [MIT License](LICENSE).
 
 ---
 
@@ -236,4 +236,4 @@ Happy caching! 🚀
 
 If you find OCTOPUS Cache DB useful and would like to support its development, consider buying us a coffee. Your support helps us continue to improve and maintain the project.
 
-[![Buy Me A Coffee](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/yourusername)
+[![Buy Me A Coffee](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://buymeacoffee.com/amal_vs)
