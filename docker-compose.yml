@@ -1,0 +1,13 @@
+version: '3.8'
+services:
+  ttldb:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - TZ=UTC
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "http://localhost:8080/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
