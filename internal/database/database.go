@@ -2,8 +2,11 @@ package database
 
 import (
 	"container/heap"
+	"fmt"
 	"sync"
 	"time"
+
+	"github.com/google/btree"
 )
 
 type Database struct {
@@ -19,14 +22,39 @@ type Item struct {
 	Indexes map[string]interface{}
 }
 
-func NewDatabase() *Database {
+// Less implements btree.Item.
+func (i *Item) Less(than btree.Item) bool {
+	other := than.(*Item)
+	switch v := i.Value.(type) {
+	case int:
+		return v < other.Value.(int)
+	case string:
+		return v < other.Value.(string)
+	case float64:
+		return v < other.Value.(float64)
+	default:
+		return false
+	}
+}
+
+func NewDatabase(dataDir string) (*Database, error) {
 	db := &Database{
 		data:       &sync.Map{},
 		indexes:    make(map[string]*Index),
 		expiryHeap: NewExpirationHeap(),
 	}
+
+	// Initialize indexes with data directory
+	for field := range db.indexes {
+		index, err := NewIndex(dataDir)
+		if err != nil {
+			return nil, fmt.Errorf("failed to create index for field %s: %w", field, err)
+		}
+		db.indexes[field] = index
+	}
+
 	go db.expirationWorker()
-	return db
+	return db, nil
 }
 
 func (db *Database) Set(key string, value interface{}, ttl time.Duration, indexes map[string]interface{}) {
@@ -93,7 +121,12 @@ func (db *Database) updateIndexes(key string, indexes map[string]interface{}) {
 
 	for field, value := range indexes {
 		if _, exists := db.indexes[field]; !exists {
-			db.indexes[field] = NewIndex()
+			index, err := NewIndex(field)
+			if err != nil {
+				fmt.Printf("failed to create index for field %s: %v\n", field, err)
+				continue
+			}
+			db.indexes[field] = index
 		}
 
 		index := db.indexes[field]

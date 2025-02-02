@@ -1,12 +1,15 @@
+# Build stage
 FROM golang:1.21-alpine AS builder
 WORKDIR /app
-COPY go.mod go.sum ./
-RUN go mod download
 COPY . .
-RUN CGO_ENABLED=0 GOOS=linux go build -o ttldb ./cmd/octopus-server
+RUN CGO_ENABLED=0 GOOS=linux go build -o octopus-cache ./cmd/octopus-cache/main.go
 
+# Runtime stage
 FROM alpine:latest
-RUN apk --no-cache add ca-certificates
-COPY --from=builder /app/ttldb /ttldb
+WORKDIR /app
+COPY --from=builder /app/octopus-cache .
+COPY --from=builder /app/config.yaml ./config/
+
+VOLUME /data
 EXPOSE 8080
-CMD ["/ttldb"]
+CMD ["./octopus-cache"]

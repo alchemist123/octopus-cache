@@ -13,6 +13,8 @@ Octopus Cache DB is a high-performance, in-memory caching system written in Go. 
 - **RESTful API**: Easy integration with any programming language via HTTP.
 - **Lightweight**: Minimal dependencies and low memory overhead.
 - **Docker Support**: Ready for containerized deployment.
+- **BTree Indexing**: Utilizes BTree data structure for efficient indexing and querying of data.(v2)
+- **Persistence and Snapshotting**: Implementing persistence to disk for data durability and Snapshotting for efficient data recovery and backup (v2)
 
 ---
 
@@ -51,6 +53,13 @@ Octopus Cache DB is a high-performance, in-memory caching system written in Go. 
 ### 8. **Cost-Effective**
    - **No External Dependencies**: Reduces operational complexity and cost.
    - **Low Memory Overhead**: Optimized data structures minimize memory usage.
+   
+### 8. **Persistence and Snapshotting**
+   - **Implementing persistence to disk for data durability
+   - **Snapshotting for efficient data recovery and backup
+   - **Integrating with existing indexing and caching mechanisms
+   - **BTree Indexing**: Utilizes BTree data structure for efficient indexing and querying of data.
+  
 
 ---
 
@@ -67,7 +76,6 @@ Octopus Cache DB is a high-performance, in-memory caching system written in Go. 
 | **Persistence**        | Not supported (in-memory) | Supported (RDB/AOF)       |
 
 ---
-
 ## Use Cases
 
 ### 1. **Session Storage**
@@ -89,6 +97,14 @@ Octopus Cache DB is a high-performance, in-memory caching system written in Go. 
 ### 5. **Feature Flagging**
    - Store feature flags with dynamic indexing.
    - Quickly query flags by user or category.
+
+---
+
+## Architecture Diagram
+
+Below is the architecture diagram for Octopus Cache DB:
+
+![Octopus Cache DB Architecture](./diagrams/v2.webp)
 
 ---
 

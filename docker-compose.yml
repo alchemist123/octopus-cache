@@ -1,13 +1,13 @@
-version: '3.8'
 services:
-  ttldb:
+  octopus-cache:
     build: .
     ports:
       - "8080:8080"
+    volumes:
+      - octopus_data:/data
     environment:
-      - TZ=UTC
-    healthcheck:
-      test: ["CMD", "wget", "--spider", "http://localhost:8080/health"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
+      - DATA_DIR=/data
+    restart: unless-stopped
+
+volumes:
+  octopus_data:
