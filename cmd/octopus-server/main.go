@@ -9,7 +9,11 @@ import (
 )
 
 func main() {
-	db := database.NewDatabase()
+	db, err := database.NewDatabase("defaultDataDir")
+	if err != nil {
+		fmt.Printf("failed to initialize database: %v\n", err)
+		return
+	}
 	handler := api.NewHandler(db)
 
 	fmt.Println("Server running on :8080")
