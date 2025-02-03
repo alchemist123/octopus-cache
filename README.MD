@@ -225,7 +225,7 @@ TTL OCTOPUS CACHE DB is open-source software licensed under the [MIT License](LI
 
 ## Roadmap
 
-- [√] Add persistence (snapshots).
+- [x] Add persistence (snapshots).
 - [ ] Implement clustering for distributed caching.
 - [ ] Add Prometheus metrics.
 - [ ] Support for more complex queries (e.g., range queries).
