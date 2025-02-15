@@ -14,6 +14,7 @@ type Database struct {
 	indexes    map[string]*Index
 	expiryHeap *ExpirationHeap
 	mu         sync.RWMutex
+	password   string
 }
 
 type Item struct {
@@ -37,11 +38,12 @@ func (i *Item) Less(than btree.Item) bool {
 	}
 }
 
-func NewDatabase(dataDir string) (*Database, error) {
+func NewDatabase(dataDir string, password string) (*Database, error) {
 	db := &Database{
 		data:       &sync.Map{},
 		indexes:    make(map[string]*Index),
 		expiryHeap: NewExpirationHeap(),
+		password:   password,
 	}
 
 	// Initialize indexes with data directory
@@ -161,4 +163,7 @@ func (db *Database) expirationWorker() {
 		}
 		db.mu.Unlock()
 	}
+}
+func (db *Database) GetPassword() string {
+	return db.password
 }
