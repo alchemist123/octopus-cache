@@ -11,14 +11,23 @@ import (
 )
 
 type Handler struct {
-	db *database.Database
+	db       *database.Database
+	password string
 }
 
 func NewHandler(db *database.Database) *Handler {
-	return &Handler{db: db}
+	return &Handler{
+		db:       db,
+		password: db.GetPassword(),
+	}
 }
 
 func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	auth := r.Header.Get("Authorization")
+	if auth != h.password {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
 	router := mux.NewRouter()
 
 	// Define routes

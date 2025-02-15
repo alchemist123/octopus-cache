@@ -23,7 +23,7 @@ Octopus Cache DB is a high-performance, in-memory caching system written in Go. 
 ### 1. **High Performance**
    - **Fast Operations**: Optimized for high-throughput use cases with O(1) time complexity for most operations.
    - **Low Latency**: Average response times of less than 1ms for GET/SET operations.
-   - **Concurrent Access**: Uses Go’s concurrency primitives (`sync.Map`, `sync.RWMutex`) to handle thousands of concurrent requests.
+   - **Concurrent Access**: Uses Go's concurrency primitives (`sync.Map`, `sync.RWMutex`) to handle thousands of concurrent requests.
 
 ### 2. **Automatic Expiration**
    - **Precise TTL**: Keys are automatically expired with millisecond precision.
@@ -34,7 +34,7 @@ Octopus Cache DB is a high-performance, in-memory caching system written in Go. 
    - **Flexible Schema**: Supports dynamic indexing of any field in the stored data.
 
 ### 4. **Lightweight and Simple**
-   - **Minimal Dependencies**: Only relies on Go’s standard library and a few lightweight packages (`gorilla/mux`, `google/uuid`).
+   - **Minimal Dependencies**: Only relies on Go's standard library and a few lightweight packages (`gorilla/mux`, `google/uuid`).
    - **Easy to Deploy**: Single binary or Docker container with no external dependencies.
 
 ### 5. **Language-Agnostic**
@@ -146,6 +146,56 @@ Below is the architecture diagram for Octopus Cache DB:
    curl http://localhost:8080/health
    ```
 
+### Authentication
+
+OCTOPUS Cache DB now includes an authentication mechanism to secure access to the API. This feature ensures that only authorized users can interact with the cache.
+
+#### How It Works
+
+- **Password Protection**: Each request to the API must include an `Authorization` header with the correct password.
+- **Unauthorized Access**: If the password is incorrect or missing, the API will respond with a `401 Unauthorized` status.
+
+#### Setting the Password
+
+You can set the password using the `CACHE_PASSWORD` environment variable in the `docker-compose.yml` file:
+
+```yaml
+environment:
+  - DATA_DIR=/data
+  - CACHE_PASSWORD=your_secure_password_here
+```
+
+#### Example Usage
+
+1. **Set a Key**:
+   ```bash
+   curl -X POST http://localhost:8080/set/testkey \
+     -H "Authorization: your_secure_password_here" \
+     -d '{
+           "value": "testvalue",
+           "ttl": "10s",
+           "indexes": {}
+         }'
+   ```
+
+2. **Get a Key**:
+   ```bash
+   curl -X GET http://localhost:8080/get/testkey \
+     -H "Authorization: your_secure_password_here"
+   ```
+
+3. **Unauthorized Access**:
+   ```bash
+   curl -X GET http://localhost:8080/get/testkey
+   ```
+
+   **Expected Result**: `Unauthorized`
+
+#### Important Notes
+
+- Ensure that the password is kept secure and not hard-coded in the source code.
+- For production environments, consider using more robust authentication methods, such as OAuth or JWT.
+
 ---
 
 ## Installation
@@ -180,7 +230,7 @@ Below is the architecture diagram for Octopus Cache DB:
 
 ## Contribution
 
-We welcome contributions! Here’s how you can help:
+We welcome contributions! Here's how you can help:
 
 1. **Report Bugs**: Open an issue on GitHub.
 2. **Suggest Features**: Share your ideas for new features or improvements.
@@ -226,6 +276,7 @@ TTL OCTOPUS CACHE DB is open-source software licensed under the [MIT License](LI
 ## Roadmap
 
 - [x] Add persistence (snapshots).
+- [x] Add authentication.
 - [ ] Implement clustering for distributed caching.
 - [ ] Add Prometheus metrics.
 - [ ] Support for more complex queries (e.g., range queries).
@@ -235,7 +286,7 @@ TTL OCTOPUS CACHE DB is open-source software licensed under the [MIT License](LI
 ## Acknowledgments
 
 - Inspired by Redis and Memcached.
-- Built with Go’s powerful concurrency primitives.
+- Built with Go's powerful concurrency primitives.
 
 ---
 

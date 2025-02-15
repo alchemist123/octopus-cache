@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	db, err := database.NewDatabase("defaultDataDir")
+	db, err := database.NewDatabase("defaultDataDir", "password")
 	if err != nil {
 		fmt.Printf("failed to initialize database: %v\n", err)
 		return

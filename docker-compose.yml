@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   octopus-cache:
     build: .
@@ -7,6 +9,7 @@ services:
       - octopus_data:/data
     environment:
       - DATA_DIR=/data
+      - PASSWORD=password
     restart: unless-stopped
 
 volumes:
